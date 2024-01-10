@@ -4,7 +4,7 @@
 <div class="row">
   <div class="col">
 
-    <form autocomplete="off">
+    <form [formGroup]="loginForm" (ngSubmit)="onSave()" autocomplete="off">
 
       <!-- Name -->
       <div class="row mb-3">
@@ -12,9 +12,10 @@
         <div class="col-sm-9">
           <input type="text"
                  class="form-control"
+                 formControlName="name"
                  placeholder="User firstname">
 
-          <span class="form-text text-danger">
+          <span *ngIf="isValidField('name')" class="form-text text-danger">
                         Must be in firstname and lastname format
                     </span>
         </div>
@@ -26,9 +27,10 @@
         <div class="col-sm-9">
           <input type="email"
                  class="form-control"
+                 formControlName="email"
                  placeholder="User email">
-          <span class="form-text text-danger">
-                        Email error message
+          <span *ngIf="isValidField('email')" class="form-text text-danger">
+                        The email format is invalid
                     </span>
         </div>
       </div>
@@ -39,8 +41,9 @@
         <div class="col-sm-9">
           <input type="text"
                  class="form-control"
+                 formControlName="username"
                  placeholder="Username">
-          <span class="form-text text-danger">
+          <span *ngIf="isValidField('username')" class="form-text text-danger">
                          User name error
                     </span>
         </div>
@@ -51,10 +54,11 @@
         <label class="col-sm-3 col-form-label">Password</label>
         <div class="col-sm-9">
           <input type="password"
+                 formControlName="password"
                  class="form-control"
                  placeholder="Password de su cuenta">
 
-          <span class="form-text text-danger">
+          <span *ngIf="isValidField('password')" class="form-text text-danger">
                          The password must have more than 6 characters
                     </span>
         </div>
@@ -66,9 +70,10 @@
         <div class="col-sm-9">
           <input type="password"
                  class="form-control"
+                 formControlName="confirmedPassword"
                  placeholder="Confirm password">
 
-          <span class="form-text text-danger">
+          <span *ngIf="isValidField('confirmedPassword')" class="form-text text-danger">
                          The passwords must be equal
                     </span>
         </div>
@@ -90,24 +95,24 @@
 </div>
 
 
-<h2>Form Valid: </h2>
-<h2>Form Status: </h2>
-<h2>Form Pending: </h2>
-<h2>Form errors</h2>
-<pre>{{ 'formulario' | json }}</pre>
+<h4>Form Valid: {{loginForm.valid}} </h4>
+<h4>Form Status: {{loginForm.status}} </h4>
+<h4>Form Pending: {{loginForm.pending}}</h4>
+<h4>Form errors</h4>
+<pre>{{  loginForm.errors | json }}</pre>
 
-<h5>Name</h5>
-<pre>{{ 'formulario' | json }}</pre>
+<h5>Name errors</h5>
+<pre>{{ loginForm.controls['name'].errors | json }}</pre>
 
-<h5>Email</h5>
-<pre>{{ 'formulario' | json }}</pre>
+<h5>Email errors</h5>
+<pre>{{ loginForm.controls['email'].errors | json }}</pre>
 
-<h5>Username</h5>
-<pre>{{ 'formulario' | json }}</pre>
+<h5>Username errors</h5>
+<pre>{{ loginForm.controls['username'].errors | json }}</pre>
 
 
-<h5>Password</h5>
-<pre>{{ 'formulario' | json }}</pre>
+<h5>Password errors</h5>
+<pre>{{ loginForm.controls['password'].errors | json }}</pre>
 
-<h5>Confirmar</h5>
-<pre>{{ 'formulario' | json }}</pre>
+<h5>Confirm password errors</h5>
+<pre>{{ loginForm.controls['confirmedPassword'].errors | json }}</pre>
