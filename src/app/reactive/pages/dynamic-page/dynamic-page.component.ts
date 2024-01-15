@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from "@angular/forms";
+import {ValidatorsService} from "../../../shared/services/validators.service";
 
 @Component({
   templateUrl: './dynamic-page.component.html',
@@ -13,7 +14,8 @@ export class DynamicPageComponent {
     favoriteGames: this.formBuilder.array([]),
   });
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+              private validator: ValidatorsService) {
   }
 
   public onSave(): void {
@@ -34,30 +36,15 @@ export class DynamicPageComponent {
   public newFavorite: FormControl = new FormControl('', Validators.required);
 
   public isValidField(field: string): boolean | null {
-    return this.myDynamicForm.controls[field].errors &&
-      this.myDynamicForm.controls[field].touched;
+    return this.validator.isValidField(this.myDynamicForm, field);
   }
 
   public isValidFieldArray(formArray: FormArray, index: number): boolean | null {
-    return formArray.controls[index].invalid &&
-      formArray.controls[index].touched;
+    return this.validator.isValidFieldArray(formArray, index);
   }
 
   public getFieldError(field: string): string | null {
-    if (!this.myDynamicForm.controls[field]) return null;
-
-    const errors: ValidationErrors = this.myDynamicForm.controls[field].errors || {};
-
-    for (let error of Object.keys(errors)) {
-      switch (error) {
-        case 'required':
-          return 'This field is required.';
-        case 'minlength':
-          return `This field must have at least ${errors['minlength'].requiredLength} characters.`;
-      }
-    }
-
-    return null;
+    return this.validator.getFieldError(this.myDynamicForm, field);
   }
 
   public onDeleteFavorite(index: number): void {

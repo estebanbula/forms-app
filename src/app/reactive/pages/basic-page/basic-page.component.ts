@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ValidatorsService} from "../../../shared/services/validators.service";
 
 @Component({
   templateUrl: './basic-page.component.html',
@@ -21,7 +22,8 @@ export class BasicPageComponent implements OnInit {
     stock: [0, [Validators.required, Validators.minLength(0)], []],
   });
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+              private validator: ValidatorsService) {
   }
 
   public onSave(): void {
@@ -32,24 +34,10 @@ export class BasicPageComponent implements OnInit {
   }
 
   public isValidField(field: string): boolean | null {
-    return this.myBasicForm.controls[field].errors &&
-      this.myBasicForm.controls[field].touched;
+    return this.validator.isValidField(this.myBasicForm, field);
   }
 
-  public getFieldError(field: string): string | null {
-    if (!this.myBasicForm.controls[field]) return null;
-
-    const errors = this.myBasicForm.controls[field].errors || {};
-
-    for (let error of Object.keys(errors)) {
-      switch (error) {
-        case 'required':
-          return 'This field is required.';
-        case 'minlength':
-          return `This field must have at least ${errors['minlength'].requiredLength} characters.`;
-      }
-    }
-
-    return null;
+  public validateErrorMessages(field: string) {
+    return this.validator.getFieldError(this.myBasicForm, field)
   }
 }

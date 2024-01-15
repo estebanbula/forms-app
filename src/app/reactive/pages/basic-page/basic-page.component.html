@@ -17,7 +17,7 @@
                  placeholder="Product name">
 
           <span *ngIf="isValidField('name')" class="form-text text-danger">
-                        {{getFieldError('name')}}
+                        {{validateErrorMessages('name')}}
                     </span>
         </div>
       </div>

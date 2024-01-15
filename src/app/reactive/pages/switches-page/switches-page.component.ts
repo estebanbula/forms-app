@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {ValidatorsService} from "../../../shared/services/validators.service";
 
 interface Person {
   gender: string,
@@ -23,7 +24,8 @@ export class SwitchesPageComponent implements OnInit {
     wantNotifications: false
   }
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+              private validator: ValidatorsService) {
   }
 
   ngOnInit(): void {
@@ -31,8 +33,7 @@ export class SwitchesPageComponent implements OnInit {
   }
 
   public isValidField(field: string): boolean | null {
-    return this.mySwitchForm.controls[field].errors &&
-      this.mySwitchForm.controls[field].touched;
+    return this.validator.isValidField(this.mySwitchForm, field);
   }
 
   public onSave(): void {
