@@ -15,6 +15,8 @@ export class RegisterPageComponent {
     username: ['', [Validators.required, Validators.minLength(4), this.validatorsService.cantBeStrider]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     confirmedPassword: ['', Validators.required],
+  }, {
+    validators: [this.validatorsService.areTwoFieldsEquals('password', 'confirmedPassword')]
   });
 
   constructor(private formBuilder: FormBuilder,
@@ -25,7 +27,6 @@ export class RegisterPageComponent {
   public isValidField(field: string): boolean | null {
     return this.validatorsService.isValidField(this.loginForm, field);
   }
-
   public onSave(): void {
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
